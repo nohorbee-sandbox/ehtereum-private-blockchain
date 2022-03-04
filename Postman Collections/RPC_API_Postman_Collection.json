@@ -1,0 +1,479 @@
+{
+  "info": {
+    "_postman_id": "171363d3-02bc-4df8-9189-8a052dc878b3",
+    "name": "Private Ethereum Blockchain",
+    "description": "This collection lets us play with a local ethereum node exposing the RPC API. Furthermore, there should be another 2 nodes: Boot, and Miner.\n\nI'm adding the docker and docker compose files to create it with a single command.\n\nMake sure to set the HOST, PORT, and GLOBAL_PASSWORD collection variables before proceeding.\n\nOther variables will be created and populated while executing the proper methods.\n\nOrder:\n\n1.  Admin peers: Check everything is ready to go.\n2.  Get Block Number: Check what is the last block. It will be changing since miners are active.\n3.  Get accounts: When running the first time, it will only return the main account. It will also set its id to the proper variable ACCOUNT_ID\n4.  Get Account Balance: Check the balance for the main account. It won't be zero since mining earnings go there by default.\n5.  Create new Account: Creates a new account and set its ID to the SECOND_ACCOUNT_ID variable\n6.  Unlock main account: Unlocks the main account so it can transfer funds\n7.  Unlock second account: Unlocks the second account so it can receive funds\n8.  Transfer fund: Send 1 ether from the main account to the second one\n9.  Get transaction by hash: Get the transaction (created in step 8) details\n10.  Verify recipient balance: Check the balance of the second account\n    \n\nOf course you can play with variables and create as many accounts as you want.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Admin Peers",
+      "_postman_id": "6035bc1b-0511-438e-8fe4-4443b3fe1d33",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 1,\n    \"method\": \"admin_peers\",\n    \"params\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to check connectivity with the nodes"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Block Number",
+      "_postman_id": "da238702-c14c-41c9-8267-39aea799ebea",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 2,\n    \"method\": \"eth_blockNumber\",\n    \"params\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to check see the last mined block number"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Accounts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "bacdd400-9697-4bd3-ae43-5e1380e76e83",
+            "exec": [
+              "if (pm.response.code == 200) {",
+              "    const responseJson = pm.response.json();",
+              "    pm.collectionVariables.set(\"ACCOUNT_ID\", responseJson.result[0]);",
+              "    console.log(\"succesfully set ACCOUNT_ID to: \" + pm.collectionVariables.get(\"ACCOUNT_ID\"))",
+              "} else {",
+              "    console.log(\"Couldn't set the account id\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "72f94e8c-35c7-4d09-86a0-86be79b657bf",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 3,\n    \"method\": \"eth_accounts\",\n    \"params\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to see the accounts registered on the blockchain"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Account Balance",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ba417a10-af9d-411c-b55e-a5b1ae23dba6",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "f1ff3a37-aa1f-47c0-9969-beb249cb57fb",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 4,\n    \"method\": \"eth_getBalance\",\n    \"params\": [\n        \"{{ACCOUNT_ID}}\",\n        \"latest\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to see the balance for the created main account.\n\nIf you ran the Get Accounts method first, it will set the variable ACCOUNT_ID. If not, you will have to set it manually.\n\nThe result is in Hex format and the unit is WEI."
+      },
+      "response": []
+    },
+    {
+      "name": "Create new Account",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ba417a10-af9d-411c-b55e-a5b1ae23dba6",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "21265626-3769-4736-93bd-678ce4b96e9c",
+            "exec": [
+              "if (pm.response.code == 200) {",
+              "    const responseJson = pm.response.json();",
+              "    pm.collectionVariables.set(\"SECOND_ACCOUNT_ID\", responseJson.result);",
+              "    console.log(\"succesfully set SECOND_ACCOUNT_ID to: \" + pm.collectionVariables.get(\"SECOND_ACCOUNT_ID\"))",
+              "} else {",
+              "    console.log(\"Couldn't set the seccond account id\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "bd91c0ba-d11c-4d55-a20d-38ecbbd1e2c3",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 5,\n    \"method\": \"personal_newAccount\",\n    \"params\": [\n        \"{{GLOBAL_PASSWORD}}\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to see the balance for the created main account.\n\nIf you ran the Get Accounts method first, it will set the variable ACCOUNT_ID. If not, you will have to set it manually.\n\nThe result is in Hex format and the unit is WEI."
+      },
+      "response": []
+    },
+    {
+      "name": "Unlock Main Account",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ba417a10-af9d-411c-b55e-a5b1ae23dba6",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "21265626-3769-4736-93bd-678ce4b96e9c",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "0d8cad7b-3ecb-4f97-9bb7-7493a3d7abbc",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 6,\n    \"method\": \"personal_unlockAccount\",\n    \"params\": [\n        \"{{SECOND_ACCOUNT_ID}}\",\n        \"{{GLOBAL_PASSWORD}}\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to unlock an account.\n\nIf you ran the Create new Account method first, the variable \"SECOND_ACCOUNT_ID\" will be set to it."
+      },
+      "response": []
+    },
+    {
+      "name": "Unlock Second Account",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ba417a10-af9d-411c-b55e-a5b1ae23dba6",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "21265626-3769-4736-93bd-678ce4b96e9c",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "01517195-f900-407e-86b0-75aa3f6f9f11",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 6,\n    \"method\": \"personal_unlockAccount\",\n    \"params\": [\n        \"{{SECOND_ACCOUNT_ID}}\",\n        \"{{GLOBAL_PASSWORD}}\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to unlock an account.\n\nIf you ran the Create new Account method first, the variable \"SECOND_ACCOUNT_ID\" will be set to it."
+      },
+      "response": []
+    },
+    {
+      "name": "Transfer fund",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ba417a10-af9d-411c-b55e-a5b1ae23dba6",
+            "exec": [
+              "var accountFrom = pm.collectionVariables.get(\"ACCOUNT_ID\");",
+              "var accountTo = pm.collectionVariables.get(\"SECOND_ACCOUNT_ID\");",
+              "",
+              "",
+              "console.log(\"Transfering from \" + accountFrom + \" to \" + accountTo);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "21265626-3769-4736-93bd-678ce4b96e9c",
+            "exec": [
+              "if (pm.response.code == 200) {",
+              "    const responseJson = pm.response.json();",
+              "    pm.collectionVariables.set(\"TRANSACTION_HASH\", responseJson.result);",
+              "    console.log(\"succesfully set TRANSACTION_HASH: \" + pm.collectionVariables.get(\"TRANSACTION_HASH\"))",
+              "} else {",
+              "    console.log(\"Couldn't set the TRANSACTION_HASH\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "fed510c9-69a9-4034-973d-63647a35a6d5",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 7,\n    \"method\": \"eth_sendTransaction\",\n    \"params\": [\n        {\n            \"from\": \"{{ACCOUNT_ID}}\",\n            \"to\": \"{{SECOND_ACCOUNT_ID}}\",\n            \"value\": \"0xf4240\"\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to transfer funds from the original account to the second one.\n\nIf you ran Get Accounts, the main account id is set \"ACCOUNT_ID\"\n\nIf you ran the Create new Account method first, the variable \"SECOND_ACCOUNT_ID\" will be set to it."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Transaction by Hash",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ba417a10-af9d-411c-b55e-a5b1ae23dba6",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "21265626-3769-4736-93bd-678ce4b96e9c",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "994822bc-6a57-445c-ba05-519af62b3e43",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 8,\n    \"method\": \"eth_getTransactionByHash\",\n    \"params\": [\n        \"{{TRANSACTION_HASH}}\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to get the transaction details by its hash.\n\nIf you has previously ran Transfer Fund, the last transaction hash has already been stored in the proper variable."
+      },
+      "response": []
+    },
+    {
+      "name": "Verify Recipient Balance",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ba417a10-af9d-411c-b55e-a5b1ae23dba6",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "21265626-3769-4736-93bd-678ce4b96e9c",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "e438e108-09ab-43f2-9515-d04f3323eb86",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 9,\n    \"method\": \"eth_getBalance\",\n    \"params\": [\n        \"{{SECOND_ACCOUNT_ID}}\",\n        \"latest\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}:{{port}}",
+        "description": "Use this method to get the balance for the second account"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "9b8530b3-d990-4c76-8ba3-133f1a212280",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "ae097277-3334-4fe6-b27d-3ee6d2b714bb",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "7f4597a4-ad87-40ab-904a-565d312ad6d6",
+      "key": "host",
+      "value": "localhost",
+      "type": "string"
+    },
+    {
+      "id": "b2b49dca-1c75-47f4-9fb7-680b68c4f95d",
+      "key": "port",
+      "value": "8545",
+      "type": "string"
+    },
+    {
+      "id": "b02d7fc5-4a9d-475f-a548-cc3abad4fca0",
+      "key": "ACCOUNT_ID",
+      "value": "0x9128ca3a73413c0d68f4f2ce19aa2b01c406b32a",
+      "type": "string"
+    },
+    {
+      "id": "81ba2f9b-5ebd-41ae-bd4c-9bc635122d2c",
+      "key": "GLOBAL_PASSWORD",
+      "value": "5uper53cr3t",
+      "type": "string"
+    },
+    {
+      "id": "7c291576-3b4d-4deb-8807-0ad3665267c5",
+      "key": "SECOND_ACCOUNT_ID",
+      "value": "0x208eab486fff047358142e10f9865a7c902cfe60",
+      "type": "string"
+    },
+    {
+      "id": "65a7fee9-51ca-4ff2-a72e-dfec3778ddd3",
+      "key": "TRANSACTION_HASH",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
