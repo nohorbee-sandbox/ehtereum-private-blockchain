@@ -8,7 +8,7 @@
   "item": [
     {
       "name": "Admin Peers",
-      "_postman_id": "6035bc1b-0511-438e-8fe4-4443b3fe1d33",
+      "id": "6035bc1b-0511-438e-8fe4-4443b3fe1d33",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -31,7 +31,7 @@
     },
     {
       "name": "Get Block Number",
-      "_postman_id": "da238702-c14c-41c9-8267-39aea799ebea",
+      "id": "da238702-c14c-41c9-8267-39aea799ebea",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -72,7 +72,7 @@
           }
         }
       ],
-      "_postman_id": "72f94e8c-35c7-4d09-86a0-86be79b657bf",
+      "id": "72f94e8c-35c7-4d09-86a0-86be79b657bf",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -107,7 +107,7 @@
           }
         }
       ],
-      "_postman_id": "f1ff3a37-aa1f-47c0-9969-beb249cb57fb",
+      "id": "f1ff3a37-aa1f-47c0-9969-beb249cb57fb",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -158,7 +158,7 @@
           }
         }
       ],
-      "_postman_id": "bd91c0ba-d11c-4d55-a20d-38ecbbd1e2c3",
+      "id": "bd91c0ba-d11c-4d55-a20d-38ecbbd1e2c3",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -203,7 +203,7 @@
           }
         }
       ],
-      "_postman_id": "0d8cad7b-3ecb-4f97-9bb7-7493a3d7abbc",
+      "id": "0d8cad7b-3ecb-4f97-9bb7-7493a3d7abbc",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -248,7 +248,7 @@
           }
         }
       ],
-      "_postman_id": "01517195-f900-407e-86b0-75aa3f6f9f11",
+      "id": "01517195-f900-407e-86b0-75aa3f6f9f11",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -304,7 +304,7 @@
           }
         }
       ],
-      "_postman_id": "fed510c9-69a9-4034-973d-63647a35a6d5",
+      "id": "fed510c9-69a9-4034-973d-63647a35a6d5",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -349,7 +349,7 @@
           }
         }
       ],
-      "_postman_id": "994822bc-6a57-445c-ba05-519af62b3e43",
+      "id": "994822bc-6a57-445c-ba05-519af62b3e43",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -394,7 +394,7 @@
           }
         }
       ],
-      "_postman_id": "e438e108-09ab-43f2-9515-d04f3323eb86",
+      "id": "e438e108-09ab-43f2-9515-d04f3323eb86",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -440,40 +440,36 @@
   ],
   "variable": [
     {
-      "id": "7f4597a4-ad87-40ab-904a-565d312ad6d6",
+      "id": "789b1fed-fd24-439b-b73e-b029300d3c64",
       "key": "host",
-      "value": "localhost",
-      "type": "string"
+      "value": "localhost"
     },
     {
-      "id": "b2b49dca-1c75-47f4-9fb7-680b68c4f95d",
+      "id": "2c319292-cd2d-441e-9663-7ad1fa873d25",
       "key": "port",
-      "value": "8545",
-      "type": "string"
+      "value": "8545"
     },
     {
-      "id": "b02d7fc5-4a9d-475f-a548-cc3abad4fca0",
+      "id": "932d8585-0432-41f9-9232-a44bdcf9fd90",
       "key": "ACCOUNT_ID",
-      "value": "0x9128ca3a73413c0d68f4f2ce19aa2b01c406b32a",
-      "type": "string"
+      "value": "0x9128ca3a73413c0d68f4f2ce19aa2b01c406b32a"
     },
     {
-      "id": "81ba2f9b-5ebd-41ae-bd4c-9bc635122d2c",
+      "id": "f60d80c5-2a3d-44ed-928a-264b3492382f",
       "key": "GLOBAL_PASSWORD",
       "value": "5uper53cr3t",
       "type": "string"
     },
     {
-      "id": "7c291576-3b4d-4deb-8807-0ad3665267c5",
+      "id": "497b29ad-33cf-441c-b30b-d9d0e553f002",
       "key": "SECOND_ACCOUNT_ID",
       "value": "0x208eab486fff047358142e10f9865a7c902cfe60",
       "type": "string"
     },
     {
-      "id": "65a7fee9-51ca-4ff2-a72e-dfec3778ddd3",
+      "id": "ff423fcb-fab6-4b5c-94f5-9af1ab398d6f",
       "key": "TRANSACTION_HASH",
-      "value": "",
-      "type": "string"
+      "value": ""
     }
   ]
 }
