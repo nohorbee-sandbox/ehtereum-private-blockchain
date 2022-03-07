@@ -440,34 +440,34 @@
   ],
   "variable": [
     {
-      "id": "766a2be8-973a-45b2-8fd0-155a4b241141",
+      "id": "aee0e5da-bc8e-4c56-9ecf-d8d0e9832f19",
       "key": "host",
       "value": "localhost"
     },
     {
-      "id": "544e3a7a-b1e8-4b28-a33e-45cda8c1bfc1",
+      "id": "1b833155-f39a-4902-bb19-a13cb9884ae8",
       "key": "port",
       "value": "8545"
     },
     {
-      "id": "876e8d36-71be-40c7-88ea-4ca09f310d61",
+      "id": "3fc399ec-f8b6-47df-96ba-8ef29d27a687",
       "key": "ACCOUNT_ID",
       "value": "0x9128ca3a73413c0d68f4f2ce19aa2b01c406b32a"
     },
     {
-      "id": "1efd8592-2ab5-4648-8939-37ab6a170e45",
+      "id": "07bd2ec9-f589-43df-813b-96d24f55fab0",
       "key": "GLOBAL_PASSWORD",
       "value": "5uper53cr3t",
       "type": "string"
     },
     {
-      "id": "1a6338ba-7e76-4182-a5d3-425ee61b87e4",
+      "id": "f28d7a1f-e282-4e09-92c8-fde1ac5d7a0a",
       "key": "SECOND_ACCOUNT_ID",
       "value": "0x208eab486fff047358142e10f9865a7c902cfe60",
       "type": "string"
     },
     {
-      "id": "d1006933-af67-40fc-937e-a37ab16c1e87",
+      "id": "74522f7d-a9d7-4733-bada-14fb9266c713",
       "key": "TRANSACTION_HASH",
       "value": ""
     }
